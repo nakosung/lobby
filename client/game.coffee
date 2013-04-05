@@ -1,9 +1,11 @@
+game = root.game
+
 Template.game.helpers
   me : ->
     Meteor.user()
 
   isMaster : (x) ->
-    game().master == Meteor.userId()
+    game()?.master == Meteor.userId()
 
   check : (a,b) ->
     a == b

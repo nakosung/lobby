@@ -1,6 +1,8 @@
 game = ->
   Games.findOne(Meteor.user()?.game)
 
+root.game = game
+
 Template.welcome.events =
   'submit' : (e) ->
     e.preventDefault()
@@ -76,7 +78,7 @@ Handlebars.registerHelper 'moment', (x) ->
 ## Bring notifications on screen!
 Users.find().observe
   changed: ->
-    if Meteor.user().notifications?.length
+    if Meteor.user()?.notifications?.length
       Meteor.call 'popNotification', (err,result) ->
         bootbox.alert(result)
 
