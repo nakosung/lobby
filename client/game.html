@@ -1,0 +1,38 @@
+<template name="game">
+    <dl>
+        <div class="btn-group">
+            <button class="btn leave">Leave</button>
+            <button class="btn ready">Ready</button>
+            <button class="btn start {{#if not isMaster}}disabled{{/if}}">Start</button>
+        </div>
+        <dt>created</dt>
+        <dd>{{moment createdAt}}</dd>
+        <dt>master</dt>
+        <dd>
+            {{#with master}}
+            {{> profile_inline}}
+            {{/with}}
+        </dd>
+        <dt>users</dt>
+        <dd>
+            <ul>
+                {{#each users}}
+                <li>
+                    {{#with uid}}
+                    {{> profile_inline}}
+                    {{/with}}
+                    {{#if check ../master uid}}
+                        <span class="label label-important">master</span>
+                    {{/if}}
+                    {{#if ready}}
+                        <span class="label">ready</span>
+                    {{/if}}
+                    {{#if isMaster}}
+                        <button class="btn btn-small kickout">Kick out</button>
+                    {{/if}}
+                </li>
+                {{/each}}
+            </ul>
+        </dd>
+    </dl>
+</template>

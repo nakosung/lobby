@@ -1,0 +1,19 @@
+<template name="lobby">
+    <h2>Games</h2>
+    <button class="btn create">Create a game</button>
+    <ul>
+        {{#each games}}
+        {{> game_item}}
+        {{/each}}
+    </ul>
+</template>
+
+<template name="game_item">
+    <div class="well">
+        {{#with master}}
+        {{> profile_inline}}
+        {{/with}}
+        {{users.length}} / {{maxCapacity}}
+        <button class="btn join pull-right">Join</button>
+    </div>
+</template>

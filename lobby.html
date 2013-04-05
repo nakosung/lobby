@@ -1,0 +1,104 @@
+<head>
+    <title>
+        Lobby
+    </title>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            {{> navbar}}
+        </div>
+    </div>
+    <div class="container">
+        {{#if currentUser}}
+            {{#if currentUser.name}}
+                {{> main}}
+            {{else}}
+                {{> welcome}}
+            {{/if}}
+        {{else}}
+            Login first
+        {{/if}}
+    </div>
+</body>
+
+<template name="welcome">
+    <h4>What is your name?</h4>
+
+    <form>
+        <input type="text" class="name">
+    </form>
+</template>
+
+<template name="navbar">
+    <a class="brand" href="#">
+        Lobby
+    </a>
+    <ul class="nav">
+        <li><a href="#">Test</a></li>
+    </ul>
+    {{loginButtons}}
+</template>
+
+<template name="main">
+    <div class="container">
+        <div class="row">
+            <div class="span3">
+                {{#with currentUser}}
+                    {{> profile}}
+                {{/with}}
+            </div>
+            <div class="span4">
+                {{> lobby}}
+            </div>
+            <div class="span3">
+                {{#if game}}
+                    {{#with game}}
+                        {{> game}}
+                    {{/with}}
+                {{else}}
+                I'm out of the game
+                {{/if}}
+            </div>
+        </div>
+        <div class="row">
+            {{> chat}}
+        </div>
+    </div>
+</template>
+
+<template name="chat">
+    <h2>Chat</h2>
+    <div style="height:100px;overflow:auto" class="chatWindow">
+        {{#each chats}}
+        <div>
+            <strong>{{#with uid}}{{> profile_inline}}{{/with}}</strong> : {{text}}
+        </div>
+        {{/each}}
+    </div>
+    <form>
+        <input type="text" class="search input">
+    </form>
+</template>
+
+<template name="profile">
+    <div class="well">
+        <form>
+            <dl>
+                <dt>Id</dt>
+                <dd>{{_id}}</dd>
+                <dt>name</dt>
+                <dd><input type="text" value="{{name}}" class="name"></dd>
+                <dt>heartbeat</dt>
+                <dd>{{moment heartbeat}}</dd>
+                <dt>game</dt>
+                <dd>{{game}}</dd>
+            </dl>
+        </form>
+    </div>
+</template>
+
+<template name="profile_inline">
+    <a href="#">{{name}}</a>
+</template>
