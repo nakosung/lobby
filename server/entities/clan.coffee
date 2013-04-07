@@ -2,7 +2,7 @@ Clan.create = (uid,options) ->
   name = options?.name or 'anonymous'
   throw new Meteor.Error("should leave clan first") if Users.findOne(uid).clan
   throw new Meteor.Error("invalid name") if name.length < 3
-  throw new Meteor.Error("Name already exists") unless Clans.findOne({name:name},{_id:1})
+  throw new Meteor.Error("Name already exists") if Clans.findOne({name:name},{_id:1})
 
   cid = Clans.insert(
     master:uid
