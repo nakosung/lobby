@@ -156,18 +156,3 @@ Template.leaderboard.helpers
   'users' : ->
     Users.find({},{sort:{heartbeat:1}})
 
-TestRouter = Backbone.Router.extend
-  routes:
-    '' : 'main'
-    'Leaderboard' : 'leaderboard'
-  main:(url_path) ->
-    Session.set('user')
-    Session.set('clan')
-  leaderboard:(url_path) ->
-    Session.set('leaderboard',1)
-    Session.set('user')
-    Session.set('clan')
-
-Router = new TestRouter
-Meteor.startup ->
-  Backbone.history.start({pushState:true})
