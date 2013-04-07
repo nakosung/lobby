@@ -1,19 +1,19 @@
 Meteor.methods
 
-  'createGame' : ->
+  'game.create' : ->
     Game.create(@userId)
 
-  'joinGame' : (gid) ->
+  'game.join' : (gid) ->
     Game.join(gid,@userId)
 
-  'leaveGame' : ->
+  'game.leave' : ->
     User.conditionalLeaveGame(@userId)
 
-  'readyForGame' : ->
+  'game.ready' : ->
     gid = Users.findOne(@userId).game
     Game.readyForGame(gid,@userId) if gid
 
-  'kickUser' : (uid) ->
+  'game.kick' : (uid) ->
     gid = Users.findOne(@userId).game
     Game.kick(gid,@userId,uid)
 
@@ -21,7 +21,12 @@ Meteor.methods
     Chat.chat(@userId,text)
 
   'changeProfile' : (options) ->
-    Users.update(@userId,{$set:{name:options.name}}) if options.name and options.name.length > 2
+    name = options?.name
+    if name
+      throw new Meteor.Error('invalid name') unless name.length > 2
+      throw new Meteor.Error('name in use') if Users.findOne({name:name},{_id:1})
+      Users.update(@userId,{$set:{name:name}})
+      Users._ensureIndex({name:1},{unique:true})
 
   'popNotification' : ->
     result = Meteor.user().notifications[0]
@@ -30,3 +35,19 @@ Meteor.methods
 
   'keepAlive' : ->
     Users.update(@userId,{$set:{heartbeat:Date.now()}})
+
+  'createClan' : (options) ->
+    Clan.create(@userId,options)
+
+  'joinClan' : (cid) ->
+    Clan.join(cid,@userId)
+
+  'leaveClan' : () ->
+    Clan.leave(Users.findOne(@userId).clan,@userId)
+
+  'kickFromClan' : (uid) ->
+    Clan.kick(Users.findOne(@userId).clan,@userId,uid)
+
+  'writeBoard' : (bid,text) ->
+    article = {writer:@userId,text:text,createdAt:Date.now()}
+    Boards.update(bid,{$push:articles:article},{upsert:true})

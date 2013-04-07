@@ -12,11 +12,11 @@ Template.game.helpers
 
 Template.game.events
   'click .leave' : ->
-    Meteor.call 'leaveGame'
+    Meteor.call 'game.leave'
 
   'click .ready' : ->
-    Meteor.call 'readyForGame'
+    Meteor.call 'game.ready'
 
   'click .kickout' : ->
-    Meteor.call 'kickUser', @uid, (err) ->
+    Meteor.call 'game.kick', @uid, (err) ->
       bootbox.alert if err then err.error else 'Okay!'

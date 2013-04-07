@@ -12,8 +12,8 @@ Game.join = (gid,uid) ->
 
 Game.leave = (gid,uid) ->
   g = Games.findOne(gid)
-  Games.update(gid,{$pull:{users:{uid:uid}}})
   User.postLeaveGame(uid)
+  Games.update(gid,{$pull:{users:{uid:uid}}})
 
   # Destroy room if necessary
   Games.remove({_id:gid,users:[]})

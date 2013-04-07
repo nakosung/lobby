@@ -27,40 +27,63 @@
     <h4>What is your name?</h4>
 
     <form>
-        <input type="text" class="name">
+        <input type="text" class="name" id="name">
     </form>
 </template>
 
 <template name="navbar">
-    <a class="brand" href="#">
+    <a class="brand" href="/" >
         Lobby
     </a>
-    <ul class="nav">
-        <li><a href="#">Test</a></li>
-    </ul>
+    {{#if currentUser}}
+        <ul class="nav">
+            <li>
+                <a href="#">
+                    {{#with currentUser._id}}
+                    user:{{> profile_inline}}
+                    {{/with}}
+                </a>
+            </li>
+            <li>
+                {{#if currentUser.clan}}
+                <a href="#">
+                    {{#with currentUser.clan}}
+                    clan:{{> clan_inline}}
+                    {{/with}}
+                </a>
+                {{else}}
+                <button class="btn btn-small" id="createClan">Create a clan</button>
+                {{/if}}
+            </li>
+            <li>
+                <a href="/Leaderboard">Leaderboard</a>
+            </li>
+        </ul>
+    {{/if}}
     {{loginButtons}}
 </template>
 
 <template name="main">
     <div class="container">
         <div class="row">
-            <div class="span3">
-                {{#with currentUser}}
-                    {{> profile}}
-                {{/with}}
-            </div>
-            <div class="span4">
-                {{> lobby}}
-            </div>
-            <div class="span3">
-                {{#if game}}
-                    {{#with game}}
-                        {{> game}}
-                    {{/with}}
-                {{else}}
-                I'm out of the game
-                {{/if}}
-            </div>
+            {{#if sessionGet 'clan'}}
+            {{> clanHome}}
+            {{else}}
+            {{#if sessionGet 'user'}}
+            {{> userHome}}
+            {{/if}}
+            {{/if}}
+            {{#if sessionGet 'leaderboard'}}
+            {{> leaderboard}}
+            {{else}}
+            {{#if game}}
+            {{#with game}}
+            {{> game}}
+            {{/with}}
+            {{else}}
+            {{> lobby}}
+            {{/if}}
+            {{/if}}
         </div>
         <div class="row">
             {{> chat}}
@@ -78,27 +101,141 @@
         {{/each}}
     </div>
     <form>
-        <input type="text" class="search input">
+        <input type="text" class="search input" id="chatMsg">
     </form>
 </template>
 
-<template name="profile">
-    <div class="well">
-        <form>
+<template name="profile_inline">
+    {{#with user}}
+        <a href="#">{{name}}</a>
+    {{/with}}
+</template>
+
+<template name="clan_inline">
+    {{#with clan}}
+        <a href="#">{{name}}</a>
+    {{/with}}
+</template>
+
+<template name="clanHome">
+    <div class="modal">
+        {{#with clan}}
+        <div class="modal-header">
+            <h2>
+                Clan: {{name}}
+                <a href="javascript:Session.set('clan')" class="pull-right">&times;</a>
+            </h2>
+        </div>
+        <div class="modal-body">
+            <div class="btn-group">
+                {{#if not currentUser.clan}}
+                <button class="btn" id="joinClan">Join</button>
+                {{/if}}
+                {{#if eq currentUser.clan _id}}
+                <button class="btn" id="leaveClan">Leave</button>
+                {{/if}}
+            </div>
             <dl>
-                <dt>Id</dt>
-                <dd>{{_id}}</dd>
                 <dt>name</dt>
-                <dd><input type="text" value="{{name}}" class="name"></dd>
-                <dt>heartbeat</dt>
-                <dd>{{moment heartbeat}}</dd>
-                <dt>game</dt>
-                <dd>{{game}}</dd>
+                <dd>{{name}}</dd>
+                <dt>master</dt>
+                <dd>{{#with master}}{{> profile_inline}}{{/with}}</dd>
+                <dt>users</dt>
+                <dd>
+                    <ul>
+                        {{#each users}}
+                        <li>{{#with uid}}{{> profile_inline}}{{/with}}</li>
+                        {{/each}}
+                    </ul>
+                </dd>
+                <dt>board</dt>
+                <dd>
+                    {{#with _id}}
+                    {{> board}}
+                    {{/with}}
+                </dd>
             </dl>
-        </form>
+        </div>
+        {{/with}}
     </div>
 </template>
 
-<template name="profile_inline">
-    <a href="#">{{name}}</a>
+<template name="userHome">
+    <div class="modal">
+        {{#with user}}
+            <div class="modal-header">
+                <h2>
+                    User: {{name}}
+                    <a href="javascript:Session.set('user')" class="pull-right">&times;</a>
+                </h2>
+            </div>
+            <div class="modal-body">
+                <dl>
+                    <dt>name</dt>
+                    <dd>
+                        {{name}}
+                        {{#if eq currentUser._id _id}}
+                        <button class="btn btn-small change">Change</button>
+                        {{/if}}
+                    </dd>
+                    <dt>createdAt</dt>
+                    <dd>{{moment createdAt}}</dd>
+                    <dt>heartbeat</dt>
+                    <dd>{{moment heartbeat}}</dd>
+                    <dt>location</dt>
+                    <dd>
+                        {{#if game}}
+                        <a href="javascript:Meteor.call('joinGame','{{game}}')">in game</a>
+                        {{/if}}
+                    </dd>
+                    <dt>clan</dt>
+                    <dd>
+                        {{#if clan}}
+                        {{#with clan}}{{> clan_inline}}{{/with}}
+                        {{else}}
+                        No clan yet
+                        {{/if}}
+                    </dd>
+                    <dt>board</dt>
+                    <dd>
+                        {{#with _id}}
+                        {{> board}}
+                        {{/with}}
+                    </dd>
+                </dl>
+            </div>
+        {{/with}}
+    </div>
+</template>
+
+<template name="board">
+    {{#with board}}
+    <h3>board</h3>
+    <ul>
+        {{#each articles}}
+        <li>
+            {{#with writer}}{{> profile_inline}}{{/with}} : {{text}}
+            <span class="label">{{moment createdAt}}</span>
+        </li>
+        {{/each}}
+    </ul>
+    {{/with}}
+    <form>
+        <input type="text" id="boardText">
+    </form>
+</template>
+
+<template name="leaderboard">
+    <h2>Leaderboard</h2>
+    <div class="span4">
+        <h4>users</h4>
+        <table>
+            {{#each users}}
+            <tr>
+                <td>{{#with _id}}{{> profile_inline}}{{/with}}</td>
+                <td>{{heartbeat}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
 </template>
