@@ -1,4 +1,4 @@
-ids = 'userData publicUserData games myClan publicClan board notifications'
+ids = 'userData publicUserData games publicClan board notifications'
 
 subscribeEx = (x, others...) ->
   handle = Meteor.subscribe(x,others...)
@@ -13,6 +13,8 @@ Meteor.autosubscribe ->
 
   u = Session.get('user')
   c = Session.get('clan')
+  subscribeEx 'myGame', Meteor.user()?.game
+  subscribeEx 'myClan', Meteor.user()?.clan
   subscribeEx 'user-profile', u
   subscribeEx 'clan-profile', c
   subscribeEx 'board', u or c

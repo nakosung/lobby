@@ -21,8 +21,14 @@ Template.main.helpers
     game()
 
 Template.lobby.events
+  'click .quick' : ->
+    Meteor.safeCall 'game.quick'
+
   'click .create' : ->
-    Meteor.safeCall 'game.create'
+    bootbox.prompt 'Title?', (result) ->
+      if result
+        Meteor.safeCall 'game.create',
+          title:result
 
 Template.game_item.events
   'click .join' : ->

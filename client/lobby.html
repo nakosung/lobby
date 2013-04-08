@@ -1,6 +1,10 @@
 <template name="lobby">
     <h2>List of games</h2>
-    <button class="btn create">Create a game</button>
+    <div class="btn-group">
+        <button class="btn btn-primary quick">Quick match</button>
+        <button class="btn create">Create a game</button>
+    </div>
+
     <div class="span8">
         {{#if sessionGet 'games-ready'}}
         <table class="table">
@@ -19,7 +23,7 @@
 <template name="game_item">
     <div class="well">
         <td>{{title}}</td>
-        <td>{{users.length}} / {{maxCapacity}}</td>
+        <td>{{numUsers}} / {{maxCapacity}}</td>
         <td>
             {{#with master}}
             {{> profile_inline}}

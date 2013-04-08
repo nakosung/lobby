@@ -5,10 +5,13 @@ Meteor.publish 'publicUserData', ->
   Users.find({},{fields:{name:1,clan:1}})
 
 Meteor.publish 'friends', ->
-  Users.find({_id:{$in:@user()?.friends}},{fields:{game:1,name:1,heartbeat:1}})
+  Users.find({_id:{$in:Users.findOne(@userId)?.friends}},{fields:{game:1,name:1,heartbeat:1}})
+
+Meteor.publish 'myGame', (game) ->
+  Games.find(game,{})
 
 Meteor.publish 'games', ->
-  Games.find({users:{$ne:[]}})
+  Games.find({users:{$gt:numUsers:0}},{fields:{numUsers:1,master:1,maxCapacity:1,title:1}})
 
 Meteor.publish 'chats', (context) ->
   Chats.find({context:context})
@@ -19,8 +22,8 @@ Meteor.publish 'clan-profile', (uid) ->
 Meteor.publish 'user-profile', (uid) ->
   Users.find(uid,{})
 
-Meteor.publish 'myClan', ->
-  Clans.find(Users.findOne(@userId)?.clan)
+Meteor.publish 'myClan', (clan) ->
+  Clans.find(clan)
 
 Meteor.publish 'publicClan', ->
   Clans.find({},{fields:{name:1}})

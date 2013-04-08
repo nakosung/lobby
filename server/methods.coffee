@@ -3,11 +3,14 @@ Meteor.methods
     gid = Users.findOne(@userId).game
     Game.edit(gid,@userId,options)
 
-  'game.create' : ->
-    Game.create(@userId)
+  'game.create' : (options) ->
+    Game.create(@userId,options)
 
   'game.join' : (gid) ->
     Game.join(gid,@userId)
+
+  'game.quick' : () ->
+    Game.quickMatch(@userId)
 
   'game.leave' : ->
     User.conditionalLeaveGame(@userId)
@@ -50,6 +53,9 @@ Meteor.methods
   'writeBoard' : (bid,text) ->
     article = {writer:@userId,text:text,createdAt:Date.now()}
     Boards.update(bid,{$push:articles:article},{upsert:true})
+
+    u = Users.findOne(bid,{name:1})
+    User.notify(u._id,"#{u.name} wrote on your board") if u
 
   'friend.add' : (uid) ->
     throw new Meteor.Error('self cannot be a friend') if @userId == uid

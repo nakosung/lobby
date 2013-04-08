@@ -7,7 +7,7 @@
 <body>
     <div id="wrap">
         <div id="main" class="conatiner clear-top">
-            <div class="navbar">
+            <div class="navbar navbar-fixed-top">
                 <div class="navbar-inner">
                     {{> navbar}}
                 </div>
@@ -61,10 +61,10 @@
                     {{/with}}
                 </a>
                 {{else}}
-                <button class="btn btn-small" id="createClan">Create a clan</button>
+                <button class="btn btn-small btn-warning" id="createClan">Create a clan</button>
                 {{/if}}
             </li>
-            <li>
+            <li class='leaderboard'>
                 <a href="#" onclick="Router.navigate('/Leaderboard',{trigger:true});return false">Leaderboard</a>
             </li>
         </ul>
