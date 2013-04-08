@@ -10,18 +10,15 @@ Template.game.helpers
 
 Template.game.events
   'click .leave' : ->
-    Meteor.call 'game.leave'
+    Meteor.safeCall 'game.leave'
 
   'click .ready' : ->
-    Meteor.call 'game.ready'
+    Meteor.safeCall 'game.ready'
 
   'click .kickout' : ->
-    Meteor.call 'game.kick', @uid, (err) ->
-      bootbox.alert if err then err.error else 'Okay!'
+    Meteor.safeCall 'game.kick', @uid,
 
   'click .edit' : ->
     bootbox.prompt 'New title?', (result) ->
-      options =
+      Meteor.safeCall 'game.edit',
         title : result
-      Meteor.call 'game.edit', options, (err,result) ->
-        bootbox.alert err.error if err

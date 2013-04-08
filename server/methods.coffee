@@ -21,7 +21,8 @@ Meteor.methods
     Game.kick(gid,@userId,uid)
 
   'chat' : (text) ->
-    Chat.chat(@userId,text)
+    context = Users.findOne(@userId).game
+    Chat.chat(@userId,text,context)
 
   'changeProfile' : (options) ->
     name = options?.name
@@ -30,11 +31,6 @@ Meteor.methods
       throw new Meteor.Error('name in use') if Users.findOne({name:name},{_id:1})
       Users.update(@userId,{$set:{name:name}})
       Users._ensureIndex({name:1},{unique:true})
-
-  'popNotification' : ->
-    result = Meteor.user().notifications[0]
-    Meteor.users.update(@userId,{$pop:{notifications:1}})
-    result
 
   'keepAlive' : ->
     Users.update(@userId,{$set:{heartbeat:Date.now()}})
@@ -54,3 +50,13 @@ Meteor.methods
   'writeBoard' : (bid,text) ->
     article = {writer:@userId,text:text,createdAt:Date.now()}
     Boards.update(bid,{$push:articles:article},{upsert:true})
+
+  'friend.add' : (uid) ->
+    throw new Meteor.Error('self cannot be a friend') if @userId == uid
+
+    Users.update(@userId,{$addToSet:{friends:uid}})
+
+  'friend.remove' : (uid) ->
+    throw new Meteor.Error('self cannot be a friend') if @userId == uid
+
+    Users.update(@userId,{$pull:{friends:uid}})

@@ -9,7 +9,7 @@ User.conditionalLeaveGame = (uid) ->
   Game.leave(u.game,uid) if u.game
 
 User.notify = (uid,msg) ->
-  Users.update(uid,{$push:{notifications:msg}})
+  Notifications.insert({owner:uid,message:msg})
 
 User.logoff = (uid) ->
   User.conditionalLeaveGame(uid)

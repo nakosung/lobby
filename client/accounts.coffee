@@ -9,8 +9,8 @@ Template.welcome.events =
     e.preventDefault()
     input = $('.name',$(e.target).parent())
     text = input.val()
-    Meteor.call 'changeProfile', {name:text}, (err,result) ->
-      input.val(Meteor.user().name)
+    Meteor.safeCall 'changeProfile',
+      name:text
 
 Template.lobby.helpers
   games : ->
@@ -22,13 +22,11 @@ Template.main.helpers
 
 Template.lobby.events
   'click .create' : ->
-    Meteor.call 'game.create', (err) ->
-      bootbox.alert err.error if err
+    Meteor.safeCall 'game.create'
 
 Template.game_item.events
   'click .join' : ->
-    Meteor.call 'game.join', @_id, (err) ->
-      bootbox.alert err.error if err
+    Meteor.safeCall 'game.join', @_id
 
 Template.chat.helpers
   chats : ->
@@ -88,26 +86,46 @@ Handlebars.registerHelper 'neq', (x,y) ->
   x != y
 
 ## Bring notifications on screen!
-Users.find().observe
-  changed: ->
-    if Meteor.user()?.notifications?.length
-      Meteor.call 'popNotification', (err,result) ->
-        bootbox.alert(result)
+((outer)->
+  showingNote = false
+  outer.showNotifications = ->
+    # guard re-entrance
+    return if showingNote
+
+    note = Notifications.findOne({read:undefined})
+    if note
+      showingNote = true
+
+      endUp = ->
+        Notifications.update(note._id,{$set:{read:true}})
+        showingNote = false
+        Meteor.setTimeout (-> showNotifications()), 1000
+
+      bootbox.alert note.message, ->
+        endUp()
+)(this)
+
+Notifications.find().observe
+  added: ->
+    showNotifications()
 
 Template.navbar.events
   'click #createClan' : ->
     bootbox.prompt 'clan name?', (name) ->
       return unless name
 
-      options =
+      Meteor.safeCall 'createClan',
         name:name
-      Meteor.call 'createClan', options, (err,result) ->
-        if err
-          bootbox.alert err.error
 
 Template.userHome.helpers
   'user' : ->
     Users.findOne(Session.get('user'))
+
+  'isSelf' : ->
+    Meteor.userId() == Session.get('user')
+
+  'isFriend' : ->
+    _.contains(Meteor.user()?.friends,Session.get('user'))
 
 Template.userHome.rendered = ->
   $('.modal')
@@ -118,11 +136,17 @@ Template.userHome.rendered = ->
 Template.userHome.events
   'click .close' : ->
     $('.modal').modal('hide')
+
   'click .change' : (e) ->
     bootbox.prompt 'New name?', (result) ->
       if result
-        Meteor.call 'changeProfile', {name:result}, (err,result) ->
-          bootbox.alert err.error if err
+        Meteor.safeCall 'changeProfile', {name:result}
+
+  'click .addFriend' : ->
+    Meteor.safeCall 'friend.add', @_id
+
+  'click .delFriend' : ->
+    Meteor.safeCall 'friend.remove', @_id
 
 Template.clanHome.helpers
   'clan' : ->
@@ -138,7 +162,7 @@ Template.clanHome.events
   'click .close' : ->
       $('.modal').modal('hide')
   'click #joinClan' : ->
-    Meteor.call 'joinClan', @_id, (err,result) ->
+    Meteor.safeCall 'joinClan', @_id, (err,result) ->
       if err
         bootbox.alert(err.error)
       else
@@ -160,11 +184,18 @@ Template.board.events
   'submit' : (e) ->
     e.preventDefault()
     input = $('#boardText')
-    Meteor.call 'writeBoard', String(this), input.val(), (err,result) ->
-      input.val('')
-      bootbox.alert err.error if err
+    text = input.val()
+    input.val('')
+    Meteor.safeCall 'writeBoard', String(this), text
 
 Template.leaderboard.helpers
   'users' : ->
     Users.find({},{sort:{heartbeat:1}})
 
+Template.friends.helpers
+  'hasAnyFriend' : ->
+    Meteor.user()?.friends?.length > 0
+
+  'friends' : ->
+    f = Meteor.user()?.friends
+    Users.find({_id:{$in:f}}) if f

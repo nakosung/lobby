@@ -1,14 +1,17 @@
 Meteor.publish 'userData', ->
-  Users.find(@userId,{fields:{game:1,name:1}})
+  Users.find(@userId,{fields:{game:1,name:1,friends:1}})
 
 Meteor.publish 'publicUserData', ->
   Users.find({},{fields:{name:1,clan:1}})
 
+Meteor.publish 'friends', ->
+  Users.find({_id:{$in:@user()?.friends}},{fields:{game:1,name:1,heartbeat:1}})
+
 Meteor.publish 'games', ->
   Games.find({users:{$ne:[]}})
 
-Meteor.publish 'chats', ->
-  Chats.find({})
+Meteor.publish 'chats', (context) ->
+  Chats.find({context:context})
 
 Meteor.publish 'clan-profile', (uid) ->
   Clans.find(uid,{})
@@ -27,3 +30,6 @@ Meteor.publish 'board', (bid) ->
 
 Meteor.publish 'leaderboard', ->
   Users.find({},{fields:{name:1,heartbeat:1}})
+
+Meteor.publish 'notifications', ->
+  Notifications.find({owner:@userId})

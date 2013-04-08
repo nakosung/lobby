@@ -13,14 +13,16 @@
                 </div>
             </div>
             <div class="container">
+                {{#if sessionGet 'userData-ready'}}
                 {{#if currentUser}}
-                {{#if currentUser.name}}
-                {{> main}}
-                {{else}}
-                {{> welcome}}
-                {{/if}}
+                    {{#if currentUser.name}}
+                    {{> main}}
+                    {{else}}
+                    {{> welcome}}
+                    {{/if}}
                 {{else}}
                 Login first
+                {{/if}}
                 {{/if}}
             </div>
         </div>
@@ -71,28 +73,51 @@
 </template>
 
 <template name="main">
+    {{#if sessionGet 'clan'}}
+    {{> clanHome}}
+    {{else}}
+    {{#if sessionGet 'user'}}
+    {{> userHome}}
+    {{/if}}
+    {{/if}}
     <div class="container">
         <div class="row">
-            {{#if sessionGet 'clan'}}
-            {{> clanHome}}
-            {{else}}
-            {{#if sessionGet 'user'}}
-            {{> userHome}}
-            {{/if}}
-            {{/if}}
-            {{#if sessionGet 'leaderboard'}}
-            {{> leaderboard}}
-            {{else}}
-            {{#if game}}
-            {{#with game}}
-            {{> game}}
-            {{/with}}
-            {{else}}
-            {{> lobby}}
-            {{/if}}
-            {{/if}}
+            <div class="span3">
+                {{> friends}}
+            </div>
+            <div class="span8">
+                {{#if sessionGet 'leaderboard'}}
+                {{> leaderboard}}
+                {{else}}
+                {{#if game}}
+                {{#with game}}
+                {{> game}}
+                {{/with}}
+                {{else}}
+                {{> lobby}}
+                {{/if}}
+                {{/if}}
+            </div>
         </div>
     </div>
+</template>
+
+<template name="friends">
+    <h3>friends</h3>
+
+    {{#if hasAnyFriend}}
+        <table class="table">
+            {{#each friends}}
+            <tr>
+                <td>
+                    {{#with _id}}{{> profile_inline}}{{/with}}
+                </td>
+            </tr>
+            {{/each}}
+        </table>
+    {{else}}
+        Socialize, please!
+    {{/if}}
 </template>
 
 <template name="chat">
@@ -131,8 +156,6 @@
         </div>
         <div class="modal-body">
             <dl>
-                <dt>name</dt>
-                <dd>{{name}}</dd>
                 <dt>master</dt>
                 <dd>{{#with master}}{{> profile_inline}}{{/with}}</dd>
                 <dt>users</dt>
@@ -143,13 +166,10 @@
                         {{/each}}
                     </ul>
                 </dd>
-                <dt>board</dt>
-                <dd>
-                    {{#with _id}}
-                    {{> board}}
-                    {{/with}}
-                </dd>
             </dl>
+            {{#with _id}}
+            {{> board}}
+            {{/with}}
         </div>
         <div class="modal-footer">
             <div class="btn-group">
@@ -202,6 +222,13 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-group">
+                    {{#if not isSelf}}
+                        {{#if isFriend}}
+                        <button class="btn btn-danger delFriend">Delete from friend</button>
+                        {{else}}
+                        <button class="btn btn-primary addFriend">Add as friend</button>
+                        {{/if}}
+                    {{/if}}
                     {{#if eq currentUser._id _id}}
                     <button class="btn btn-warning change">Edit profile</button>
                     {{/if}}
