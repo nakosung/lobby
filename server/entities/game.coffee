@@ -79,6 +79,5 @@ Games.allow
   update : ->
     true
 
-
 Meteor.startup ->
   Games.remove({$lt:{numUsers:0}})

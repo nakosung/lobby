@@ -67,6 +67,9 @@
             <li class='leaderboard'>
                 <a href="#" onclick="Router.navigate('/Leaderboard',{trigger:true});return false">Leaderboard</a>
             </li>
+            <li>
+                <a href="#">Credit : {{currentUser.credit}}</a>
+            </li>
         </ul>
     {{/if}}
     {{loginButtons}}
@@ -84,6 +87,7 @@
         <div class="row">
             <div class="span3">
                 {{> friends}}
+                {{> inventory}}
             </div>
             <div class="span8">
                 {{#if sessionGet 'leaderboard'}}
@@ -272,4 +276,16 @@
     {{else}}
         <h3>loading</h3>
     {{/if}}
+</template>
+
+<template name="inventory">
+    <h3>inventory</h3>
+    <ul>
+        {{#each items}}
+        <li>
+            {{description}}
+        </li>
+        {{/each}}
+    </ul>
+    <button class="btn btn-warning dig">Dig!</button>
 </template>

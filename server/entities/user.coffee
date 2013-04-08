@@ -23,3 +23,5 @@ cleanUp = ->
 
 Meteor.setInterval cleanUp, 15 * 1000
 
+Meteor.startup ->
+  Users.update({credit:undefined},{$set:credit:0})

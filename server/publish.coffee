@@ -1,5 +1,5 @@
 Meteor.publish 'userData', ->
-  Users.find(@userId,{fields:{game:1,name:1,friends:1}})
+  Users.find(@userId,{fields:{game:1,name:1,friends:1,credit:1}})
 
 Meteor.publish 'publicUserData', ->
   Users.find({},{fields:{name:1,clan:1}})
@@ -36,3 +36,6 @@ Meteor.publish 'leaderboard', ->
 
 Meteor.publish 'notifications', ->
   Notifications.find({owner:@userId})
+
+Meteor.publish 'inventory', ->
+  Items.find({owner:@userId})

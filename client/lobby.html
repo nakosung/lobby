@@ -1,36 +1,46 @@
 <template name="lobby">
-    <h2>List of games</h2>
-    <div class="btn-group">
-        <button class="btn btn-primary quick">Quick match</button>
-        <button class="btn create">Create a game</button>
+    <div class="page-header">
+        <h2>List of games</h2>
+        <div class="btn-group">
+            <button class="btn btn-primary quick">Quick match</button>
+            <button class="btn create">Create a game</button>
+        </div>
+
     </div>
 
-    <div class="span8">
+
+
+    <div class="row-fluid">
         {{#if sessionGet 'games-ready'}}
-        <table class="table">
+
+        <ul class="thumbnails">
             {{#each games}}
-            <tr>
-                {{> game_item}}
-            </tr>
+            {{> game_item}}
             {{/each}}
-        </table>
+        </ul>
         {{else}}
         loading..
         {{/if}}
+
     </div>
 </template>
 
 <template name="game_item">
-    <div class="well">
-        <td>{{title}}</td>
-        <td>{{numUsers}} / {{maxCapacity}}</td>
-        <td>
-            {{#with master}}
-            {{> profile_inline}}
-            {{/with}}
-        </td>
-        <td>
-            <button class="btn join pull-right">Join</button>
-        </td>
+    <div class="span4">
+        <div class="thumbnail">
+            <img src="http://placehold.it/300x200" alt="game image">
+            <div class="caption">
+                <h4>{{title}}</h4>
+                <p>
+                    {{#with master}}
+                    {{> profile_inline}}
+                    {{/with}}
+                    <span class="label">{{numUsers}} / {{maxCapacity}}</span>
+                </p>
+            </div>
+            <div class="widget-footer">
+                <button class="btn btn-primary join">Join</button>
+            </div>
+        </div>
     </div>
 </template>
