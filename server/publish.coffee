@@ -17,7 +17,7 @@ Meteor.publish 'user-profile', (uid) ->
   Users.find(uid,{})
 
 Meteor.publish 'myClan', ->
-  Clans.find(Users.findOne(@userId).clan)
+  Clans.find(Users.findOne(@userId)?.clan)
 
 Meteor.publish 'publicClan', ->
   Clans.find({},{fields:{name:1}})
