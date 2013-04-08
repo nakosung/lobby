@@ -139,7 +139,9 @@
 
 <template name="profile_inline">
     {{#with user}}
-    <a href="#"><img src="http://placehold.it/24x24" alt="emblem">{{name}}</a>
+    <a href="#">
+        <img src="http://placehold.it/24x24" alt="emblem">{{name}}
+    </a>
     {{/with}}
 </template>
 
@@ -203,8 +205,6 @@
                 <dl>
                     <dt>createdAt</dt>
                     <dd>{{moment createdAt}}</dd>
-                    <dt>heartbeat</dt>
-                    <dd>{{moment heartbeat}}</dd>
                     <dt>location</dt>
                     <dd>
                         {{#if game}}

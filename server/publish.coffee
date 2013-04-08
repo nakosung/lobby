@@ -1,11 +1,11 @@
 Meteor.publish 'userData', ->
-  Users.find(@userId,{fields:{game:1,name:1,friends:1,credit:1}})
+  Users.find(@userId,{fields:{game:1,name:1,friends:1,credit:1,online:1}})
 
 Meteor.publish 'publicUserData', ->
-  Users.find({},{fields:{name:1,clan:1}})
+  Users.find({},{fields:{name:1,clan:1,online:1}})
 
 Meteor.publish 'friends', ->
-  Users.find({_id:{$in:Users.findOne(@userId)?.friends}},{fields:{game:1,name:1,heartbeat:1}})
+  Users.find({_id:{$in:Users.findOne(@userId)?.friends}},{fields:{game:1,name:1,online:1}})
 
 Meteor.publish 'myGame', (game) ->
   Games.find(game,{})

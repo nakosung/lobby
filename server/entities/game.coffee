@@ -33,7 +33,7 @@ Game.join = (gid,uid) ->
 
 Game.leave = (gid,uid) ->
   g = Games.findOne(gid)
-  User.postLeaveGame(uid)
+
   Games.update gid,
     $pull:{users:{uid:uid}}
     $inc:{numUsers:-1}
@@ -46,6 +46,8 @@ Game.leave = (gid,uid) ->
     new_master = _.find(_.pluck(g.users,'uid'),((u)->u != uid))
     Games.update({_id:gid,master:uid},{$set:{master:new_master}})
     User.notify(new_master,"You are the master of this room")
+
+  User.postLeaveGame(uid)
 
 Game.create = (uid,options) ->
   User.conditionalLeaveGame(uid)

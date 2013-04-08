@@ -13,7 +13,7 @@ User.notify = (uid,msg) ->
 
 User.logoff = (uid) ->
   User.conditionalLeaveGame(uid)
-  Users.update(uid,{$unset:{heartbeat:1}})
+  Users.update(uid,{$unset:{heartbeat:1},$set:{online:true}})
 
 ## Connection lost handler
 cleanUp = ->
