@@ -5,6 +5,8 @@ subscribeEx = (x, others...) ->
   Session.set("#{x}-ready",handle?.ready())
 
 Meteor.autosubscribe ->
+  return unless Meteor.user()
+
   _.each(ids.split(' '),(id)->
     subscribeEx id
   )
