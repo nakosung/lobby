@@ -104,7 +104,7 @@ Template.navbar.events
       Meteor.call 'createClan', options, (err,result) ->
         if err
           bootbox.alert err.error
-        
+
 Template.userHome.helpers
   'user' : ->
     Users.findOne(Session.get('user'))

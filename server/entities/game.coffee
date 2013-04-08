@@ -1,3 +1,13 @@
+grabSomeTitle = ->
+  'game room name'
+
+Game.edit = (gid,uid,options) ->
+  g = Games.findOne(gid)
+  throw new Meteor.Error('You are not the master') if g.master != uid
+
+  if options?.title
+    Games.update(gid,{$set:{title:options?.title}})
+
 Game.join = (gid,uid) ->
   g = Games.findOne(gid)
   throw new Meteor.Error("no space for new player") if g.users.length >= g.maxCapacity
@@ -26,7 +36,7 @@ Game.leave = (gid,uid) ->
 
 Game.create = (uid) ->
   User.conditionalLeaveGame(uid)
-  gid = Games.insert({master:uid,users:[{uid:uid}],maxCapacity:16,createdAt:Date.now()})
+  gid = Games.insert({master:uid,users:[{uid:uid}],maxCapacity:16,createdAt:Date.now(),title:grabSomeTitle()})
   User.preJoinGame(uid,gid)
   gid
 

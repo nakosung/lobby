@@ -1,16 +1,18 @@
 <template name="game">
+    <h3>{{title}}</h3>
     <dl>
         <div class="btn-group">
             <button class="btn btn-warning leave">Leave</button>
             <button class="btn ready">Ready</button>
             <button class="btn btn-inverse start {{#if not isMaster}}disabled{{/if}}">Start</button>
+            <button class="btn edit {{#if not isMaster}}disabled{{/if}}">Edit settings</button>
         </div>
         <dt>created</dt>
         <dd>{{moment createdAt}}</dd>
     </dl>
     <table class="table table-condensed span8">
+        {{#each users}}
         <tr>
-            {{#each users}}
             <td>
                 {{#with uid}}
                 {{> profile_inline}}
@@ -27,7 +29,7 @@
                 <button class="btn btn-small kickout">Kick out</button>
                 {{/if}}
             </td>
-            {{/each}}
         </tr>
+        {{/each}}
     </table>
 </template>

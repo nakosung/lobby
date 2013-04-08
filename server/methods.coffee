@@ -1,4 +1,7 @@
 Meteor.methods
+  'game.edit' : (options) ->
+    gid = Users.findOne(@userId).game
+    Game.edit(gid,@userId,options)
 
   'game.create' : ->
     Game.create(@userId)

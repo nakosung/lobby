@@ -1,19 +1,32 @@
 <template name="lobby">
-    <h2>Games</h2>
+    <h2>List of games</h2>
     <button class="btn create">Create a game</button>
-    <ul>
-        {{#each games}}
-        {{> game_item}}
-        {{/each}}
-    </ul>
+    <div class="span8">
+        {{#if sessionGet 'games-ready'}}
+        <table class="table">
+            {{#each games}}
+            <tr>
+                {{> game_item}}
+            </tr>
+            {{/each}}
+        </table>
+        {{else}}
+        loading..
+        {{/if}}
+    </div>
 </template>
 
 <template name="game_item">
     <div class="well">
-        {{#with master}}
-        {{> profile_inline}}
-        {{/with}}
-        {{users.length}} / {{maxCapacity}}
-        <button class="btn join pull-right">Join</button>
+        <td>{{title}}</td>
+        <td>{{users.length}} / {{maxCapacity}}</td>
+        <td>
+            {{#with master}}
+            {{> profile_inline}}
+            {{/with}}
+        </td>
+        <td>
+            <button class="btn join pull-right">Join</button>
+        </td>
     </div>
 </template>

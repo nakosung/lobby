@@ -18,3 +18,10 @@ Template.game.events
   'click .kickout' : ->
     Meteor.call 'game.kick', @uid, (err) ->
       bootbox.alert if err then err.error else 'Okay!'
+
+  'click .edit' : ->
+    bootbox.prompt 'New title?', (result) ->
+      options =
+        title : result
+      Meteor.call 'game.edit', options, (err,result) ->
+        bootbox.alert err.error if err
