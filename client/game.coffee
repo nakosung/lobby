@@ -1,5 +1,3 @@
-game = root.game
-
 Template.game.helpers
   me : ->
     Meteor.user()

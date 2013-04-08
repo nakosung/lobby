@@ -1,7 +1,5 @@
-game = ->
+window.game = ->
   Games.findOne(Meteor.user()?.game)
-
-root.game = game
 
 Handlebars.registerHelper 'sessionGet', (x) ->
   Session.get(x)
@@ -55,7 +53,7 @@ Template.profile_inline.helpers
 
 Template.profile_inline.events
   'click' : ->
-    Session.set('clan',undefined)
+    $('.modal').modal('hide')
     Session.set('user',@_id)
 
 Template.clan_inline.helpers
@@ -64,7 +62,7 @@ Template.clan_inline.helpers
 
 Template.clan_inline.events
   'click' : ->
-    Session.set('user',undefined)
+    $('.modal').modal('hide')
     Session.set('clan',@_id)
 
 interval = null
@@ -113,7 +111,15 @@ Template.userHome.helpers
   'user' : ->
     Users.findOne(Session.get('user'))
 
+Template.userHome.rendered = ->
+  $('.modal')
+    .modal()
+    .on 'hidden', ->
+      Session.set('user')
+
 Template.userHome.events
+  'click .close' : ->
+    $('.modal').modal('hide')
   'click .change' : (e) ->
     bootbox.prompt 'New name?', (result) ->
       if result
@@ -124,7 +130,15 @@ Template.clanHome.helpers
   'clan' : ->
     Clans.findOne(Session.get('clan'))
 
+Template.clanHome.rendered = ->
+  $('.modal')
+    .modal()
+    .on 'hidden', ->
+      Session.set('clan')
+
 Template.clanHome.events
+  'click .close' : ->
+      $('.modal').modal('hide')
   'click #joinClan' : ->
     Meteor.call 'joinClan', @_id, (err,result) ->
       if err

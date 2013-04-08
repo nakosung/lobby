@@ -5,22 +5,29 @@
 </head>
 
 <body>
-    <div class="navbar">
-        <div class="navbar-inner">
-            {{> navbar}}
+    <div id="wrap">
+        <div id="main" class="conatiner clear-top">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    {{> navbar}}
+                </div>
+            </div>
+            <div class="container">
+                {{#if currentUser}}
+                {{#if currentUser.name}}
+                {{> main}}
+                {{else}}
+                {{> welcome}}
+                {{/if}}
+                {{else}}
+                Login first
+                {{/if}}
+            </div>
         </div>
     </div>
-    <div class="container">
-        {{#if currentUser}}
-            {{#if currentUser.name}}
-                {{> main}}
-            {{else}}
-                {{> welcome}}
-            {{/if}}
-        {{else}}
-            Login first
-        {{/if}}
-    </div>
+    <footer class="footer">
+        {{> chat}}
+    </footer>
 </body>
 
 <template name="welcome">
@@ -85,14 +92,10 @@
             {{/if}}
             {{/if}}
         </div>
-        <div class="row">
-            {{> chat}}
-        </div>
     </div>
 </template>
 
 <template name="chat">
-    <h2>Chat</h2>
     <div style="height:100px;overflow:auto" class="chatWindow">
         {{#each chats}}
         <div>
@@ -107,7 +110,7 @@
 
 <template name="profile_inline">
     {{#with user}}
-        <a href="#">{{name}}</a>
+    <a href="#"><img src="http://placehold.it/24x24" alt="emblem">{{name}}</a>
     {{/with}}
 </template>
 
@@ -123,18 +126,10 @@
         <div class="modal-header">
             <h2>
                 Clan: {{name}}
-                <a href="javascript:Session.set('clan')" class="pull-right">&times;</a>
+                <a href="#" class="pull-right close">&times;</a>
             </h2>
         </div>
         <div class="modal-body">
-            <div class="btn-group">
-                {{#if not currentUser.clan}}
-                <button class="btn" id="joinClan">Join</button>
-                {{/if}}
-                {{#if eq currentUser.clan _id}}
-                <button class="btn" id="leaveClan">Leave</button>
-                {{/if}}
-            </div>
             <dl>
                 <dt>name</dt>
                 <dd>{{name}}</dd>
@@ -156,6 +151,16 @@
                 </dd>
             </dl>
         </div>
+        <div class="modal-footer">
+            <div class="btn-group">
+                {{#if not currentUser.clan}}
+                <button class="btn btn-primary" id="joinClan">Join</button>
+                {{/if}}
+                {{#if eq currentUser.clan _id}}
+                <button class="btn btn-danger" id="leaveClan">Leave</button>
+                {{/if}}
+            </div>
+        </div>
         {{/with}}
     </div>
 </template>
@@ -165,19 +170,13 @@
         {{#with user}}
             <div class="modal-header">
                 <h2>
+                    <img src="http://placehold.it/64x64" alt="">
                     User: {{name}}
-                    <a href="javascript:Session.set('user')" class="pull-right">&times;</a>
+                    <a href="#" class="pull-right close">&times;</a>
                 </h2>
             </div>
             <div class="modal-body">
                 <dl>
-                    <dt>name</dt>
-                    <dd>
-                        {{name}}
-                        {{#if eq currentUser._id _id}}
-                        <button class="btn btn-small change">Change</button>
-                        {{/if}}
-                    </dd>
                     <dt>createdAt</dt>
                     <dd>{{moment createdAt}}</dd>
                     <dt>heartbeat</dt>
@@ -196,13 +195,17 @@
                         No clan yet
                         {{/if}}
                     </dd>
-                    <dt>board</dt>
-                    <dd>
-                        {{#with _id}}
-                        {{> board}}
-                        {{/with}}
-                    </dd>
                 </dl>
+                {{#with _id}}
+                {{> board}}
+                {{/with}}
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group">
+                    {{#if eq currentUser._id _id}}
+                    <button class="btn btn-warning change">Edit profile</button>
+                    {{/if}}
+                </div>
             </div>
         {{/with}}
     </div>
@@ -227,15 +230,19 @@
 
 <template name="leaderboard">
     <h2>Leaderboard</h2>
-    <div class="span4">
-        <h4>users</h4>
-        <table>
-            {{#each users}}
-            <tr>
-                <td>{{#with _id}}{{> profile_inline}}{{/with}}</td>
-                <td>{{heartbeat}}</td>
-            </tr>
-            {{/each}}
-        </table>
-    </div>
+    {{#if sessionGet 'leaderboard-ready'}}
+        <div class="span4">
+            <h4>users</h4>
+            <table>
+                {{#each users}}
+                <tr>
+                    <td>{{#with _id}}{{> profile_inline}}{{/with}}</td>
+                    <td>{{heartbeat}}</td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+    {{else}}
+        <h3>loading</h3>
+    {{/if}}
 </template>

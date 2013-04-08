@@ -51,3 +51,4 @@ Games.allow
 
 Meteor.startup ->
   Games.remove({master:undefined})
+
