@@ -3,13 +3,13 @@ TestRouter = Backbone.Router.extend
     '' : 'main'
     'Leaderboard' : 'leaderboard'
   main: ->
+    $('.modal').modal('hide')
     Session.set('leaderboard')
-    Session.set('user')
-    Session.set('clan')
+
   leaderboard: ->
+    $('.modal').modal('hide')
     Session.set('leaderboard',1)
-    Session.set('user')
-    Session.set('clan')
+
 
 Router = new TestRouter
 window.Router = Router

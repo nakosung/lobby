@@ -104,9 +104,7 @@ Template.navbar.events
       Meteor.call 'createClan', options, (err,result) ->
         if err
           bootbox.alert err.error
-        else
-          Session.set 'clan', result
-
+        
 Template.userHome.helpers
   'user' : ->
     Users.findOne(Session.get('user'))
@@ -151,8 +149,8 @@ Template.clanHome.events
       if err
         bootbox.alert(err.error)
       else
+        $('.modal').modal('hide')
         bootbox.alert('you are freed from the clan')
-        Session.set('clan')
 
 Template.board.helpers
   'board' : ->
