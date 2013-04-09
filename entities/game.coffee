@@ -80,10 +80,18 @@ Game.leave = (gid,uid) ->
       $pull:{users:{uid:uid}}
       $inc:{numUsers:-1,vacancy:1}
 
+    # Hand off master if necessary
+    count = 0
+    while Games.findOne({_id:gid,master:uid})
+      g = Games.findOne(gid)
+      new_master = _.find(_.pluck(g.users,'uid'),((u)->u != uid))
+      break unless new_master
+      Games.update {_id:gid,master:uid,users:{$elemMatch:{uid:new_master}}},
+        $set:{master:new_master}
+
     # Destroy room if necessary
     Game.conditionalDestroy(gid)
 
-    # Hand off master if necessary
 #    if g.master == uid
 #      new_master = _.find(_.pluck(g.users,'uid'),((u)->u != uid))
 #      if not _.isUndefined(new_master)
