@@ -36,7 +36,7 @@ Meteor.methods
       Users._ensureIndex({name:1},{unique:true})
 
   'keepAlive' : ->
-    Users.update(@userId,{$set:{heartbeat:Date.now(),online:true}})
+    User.keepAlive(@userId)
 
   'createClan' : (options) ->
     Clan.create(@userId,options)

@@ -11,7 +11,7 @@ Meteor.publish 'myGame', (game) ->
   Games.find(game,{})
 
 Meteor.publish 'games', ->
-  Games.find({users:{$gt:numUsers:0}},{fields:{numUsers:1,master:1,maxCapacity:1,title:1}})
+  Games.find({full:undefined},{limit:3,sort:{numUsers:-1},fields:{numUsers:1,master:1,maxCapacity:1,title:1}})
 
 Meteor.publish 'chats', (context) ->
   Chats.find({context:context})
@@ -21,6 +21,9 @@ Meteor.publish 'clan-profile', (uid) ->
 
 Meteor.publish 'user-profile', (uid) ->
   Users.find(uid,{})
+
+Meteor.publish 'stats', ->
+  Stats.find({})
 
 Meteor.publish 'myClan', (clan) ->
   Clans.find(clan)

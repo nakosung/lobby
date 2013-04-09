@@ -2,12 +2,15 @@ grabSomeTitle = ->
   'game room name'
 
 Game.quickMatch = (uid) ->
-  game = Games.findOne({$where:->
-    @maxCapacity - @numUsers > 0
-  },{_id:1})
+  game = Games.findOne({full:undefined},{_id:1})
 
-  Game.join(game._id,uid) if game
-  Game.create(uid) unless game
+  needToCreate = true
+  try
+    if game
+      Game.join(game._id,uid)
+      needToCreate = false
+  finally
+    Game.create(uid) if needToCreate
 
 Game.edit = (gid,uid,options) ->
   g = Games.findOne(gid)
@@ -17,26 +20,32 @@ Game.edit = (gid,uid,options) ->
     Games.update(gid,{$set:{title:options?.title}})
 
 Game.join = (gid,uid) ->
-  g = Games.findOne(gid)
-  throw new Meteor.Error("no space for new player") if g.users.length >= g.maxCapacity
-
-  return if _.contains(_.pluck(g.users,'uid'),uid)
-
   User.conditionalLeaveGame(uid)
 
-  User.preJoinGame(uid,gid)
+  g = Games.findOne(gid)
 
-  Games.update {_id:gid},
-    $addToSet:{users:{uid:uid}}
+  # insert a player if there's room for me
+  Games.update {_id:gid,numUsers:{$lt:g.maxCapacity}},
+    $push:{users:{uid:uid}}
     $inc:{numUsers:1}
 
+  Games.update {_id:gid,numUsers:g.maxCapacity},
+    $set:{full:true}
+
+  # check if succeeded
+  if Games.findOne {_id:gid,users:{$elemMatch:{uid:uid}}}
+    User.preJoinGame(uid,gid)
+  else
+    throw new Meteor.Error("couldn't join")
 
 Game.leave = (gid,uid) ->
   g = Games.findOne(gid)
+  return g unless g
 
-  Games.update gid,
+  Games.update {_id:gid,users:{$elemMatch:{uid:uid}}},
     $pull:{users:{uid:uid}}
     $inc:{numUsers:-1}
+    $unset:{full:1}
 
   # Destroy room if necessary
   Games.remove({_id:gid,users:[]})
@@ -82,4 +91,14 @@ Games.allow
     true
 
 Meteor.startup ->
-  Games.remove({$lt:{numUsers:0}})
+  Games.remove({})
+  Games.remove({$lt:{numUsers:1}})
+
+  Stats.remove({})
+  Stats.insert({numGames:0})
+
+  Meteor.setInterval (->
+    numGames = Games.find({},{_id:1}).fetch().length
+    numUsers = Users.find({heartbeat:{$ne:null}},{_id:1}).fetch().length
+    Stats.update({},{$set:{numGames:numGames,numUsers:numUsers}})
+  ),1000

@@ -1,4 +1,4 @@
-ids = 'userData publicUserData games publicClan board notifications inventory'
+ids = 'userData publicUserData games publicClan board notifications inventory stats'
 
 subscribeEx = (x, others...) ->
   handle = Meteor.subscribe(x,others...)

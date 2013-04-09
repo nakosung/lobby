@@ -14,7 +14,7 @@ Template.welcome.events =
 
 Template.lobby.helpers
   games : ->
-    Games.find()
+    Games.find({},{limit:3})
 
 Template.main.helpers
   game : ->
@@ -114,6 +114,10 @@ Handlebars.registerHelper 'neq', (x,y) ->
 Notifications.find().observe
   added: ->
     showNotifications()
+
+Template.navbar.helpers
+  stats : ->
+    Stats.findOne()
 
 Template.navbar.events
   'click #createClan' : ->

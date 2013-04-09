@@ -15,6 +15,9 @@ User.logoff = (uid) ->
   User.conditionalLeaveGame(uid)
   Users.update(uid,{$unset:{heartbeat:1},$set:{online:true}})
 
+User.keepAlive = (uid) ->
+  Users.update(uid,{$set:{heartbeat:Date.now(),online:true}})
+
 ## Connection lost handler
 cleanUp = ->
   cursor = Users.find({heartbeat:{$lt:Date.now()-30000}},{_id:1})

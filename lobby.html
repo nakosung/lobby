@@ -42,7 +42,7 @@
 
 <template name="navbar">
     <a class="brand" href="#" onclick="Router.navigate('/',{trigger:true});return false" >
-        Lobby.js
+        Lobby.js {{stats.numGames}}/{{stats.numUsers}}
     </a>
     {{#if currentUser}}
         <ul class="nav">
