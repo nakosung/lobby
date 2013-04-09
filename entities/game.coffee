@@ -53,8 +53,9 @@ Game.leave = (gid,uid) ->
   # Hand off master if necessary
   if g.master == uid
     new_master = _.find(_.pluck(g.users,'uid'),((u)->u != uid))
-    Games.update({_id:gid,master:uid},{$set:{master:new_master}})
-    User.notify(new_master,"You are the master of this room")
+    if not _.isUndefined(new_master)
+      Games.update({_id:gid,master:uid},{$set:{master:new_master}})
+      User.notify(new_master,"You are the master of this room")
 
   User.postLeaveGame(uid)
 
@@ -90,15 +91,39 @@ Games.allow
   update : ->
     true
 
-Meteor.startup ->
-  Games.remove({})
-  Games.remove({$lt:{numUsers:1}})
+Meteor.methods
+  'game.edit' : (options) ->
+    gid = Users.findOne(@userId).game
+    Game.edit(gid,@userId,options)
 
-  Stats.remove({})
-  Stats.insert({numGames:0})
+  'game.create' : (options) ->
+    Game.create(@userId,options)
 
-  Meteor.setInterval (->
-    numGames = Games.find({},{_id:1}).fetch().length
-    numUsers = Users.find({heartbeat:{$ne:null}},{_id:1}).fetch().length
-    Stats.update({},{$set:{numGames:numGames,numUsers:numUsers}})
-  ),1000
+  'game.join' : (gid) ->
+    Game.join(gid,@userId)
+
+  'game.quick' : () ->
+    Game.quickMatch(@userId)
+
+  'game.leave' : ->
+    User.conditionalLeaveGame(@userId)
+
+  'game.ready' : ->
+    gid = Users.findOne(@userId).game
+    Game.readyForGame(gid,@userId) if gid
+
+  'game.kick' : (uid) ->
+    gid = Users.findOne(@userId).game
+    Game.kick(gid,@userId,uid)
+
+if Meteor.isServer
+  Meteor.startup ->
+    Stats.remove({})
+    Stats.insert({numGames:0})
+
+    Meteor.setInterval (->
+      numGames = Games.find({},{_id:1}).fetch().length
+      numUsers = Users.find({heartbeat:{$ne:null}},{_id:1}).fetch().length
+      Stats.update({},{$set:{numGames:numGames,numUsers:numUsers}})
+    ),1000
+

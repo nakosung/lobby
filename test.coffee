@@ -8,6 +8,7 @@ Bot.add = (id,options) ->
     5000
   seq.push ->
     User.conditionalLeaveGame(id)
+
   f = ->
     User.keepAlive(id)
     g = _.shuffle(seq)[0]
@@ -19,20 +20,22 @@ Bot.add = (id,options) ->
 
     Meteor.setTimeout f, timeout
 
+  return
   f()
 
-Meteor.autorun ->
-  n = Users.find({testbot:true},{_id:1}).fetch().length
-  _.each _.range(n,100), ->
-    try
-      Users.insert({name:"Bot#{_.random(1000000)}",testbot:true})
-    catch e
-      console.log 'dup bot'
-
-  Users.find({testbot:true}).observeChanges
-    added: (id) ->
+if Meteor.isServer
+  Meteor.autorun ->
+    n = Users.find({testbot:true},{_id:1}).fetch().length
+    _.each _.range(n,100), ->
       try
-        Bot.add(id)
+        Users.insert({name:"Bot#{_.random(1000000)}",testbot:true})
+      catch e
+        console.log 'dup bot'
+
+    Users.find({testbot:true}).observeChanges
+      added: (id) ->
+        try
+          Bot.add(id)
 
 
 

@@ -2,16 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="49b74ecc-6216-48dc-9fe2-e26d8d057b53" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/test.coffee" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/entities/board.coffee" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/entities/chat.coffee" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/entities/item.coffee" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/entities/user.coffee" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/entities/chat.coffee" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/entities/item.coffee" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/entities/user.coffee" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/methods.coffee" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/server/entities/clan.coffee" afterPath="$PROJECT_DIR$/entities/clan.coffee" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/server/entities/game.coffee" afterPath="$PROJECT_DIR$/entities/game.coffee" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/server/test.coffee" afterPath="$PROJECT_DIR$/test.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/accounts.coffee" afterPath="$PROJECT_DIR$/client/accounts.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/subscription.coffee" afterPath="$PROJECT_DIR$/client/subscription.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/schema.js" afterPath="$PROJECT_DIR$/lib/schema.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lobby.html" afterPath="$PROJECT_DIR$/lobby.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/entities/game.coffee" afterPath="$PROJECT_DIR$/server/entities/game.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/entities/user.coffee" afterPath="$PROJECT_DIR$/server/entities/user.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods.coffee" afterPath="$PROJECT_DIR$/server/methods.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/publish.coffee" afterPath="$PROJECT_DIR$/server/publish.coffee" />
     </list>
     <ignored path="lobby.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,37 +34,10 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="game.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/entities/game.coffee">
+      <file leaf-file-name="board.coffee" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entities/board.coffee">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="97" column="28" selection-start="2481" selection-end="2481" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="user.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/entities/user.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="18" selection-start="477" selection-end="477" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="methods.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/methods.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="26" selection-start="1007" selection-end="1007" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/test.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="30" selection-start="324" selection-end="324" vertical-scroll-proportion="0.0">
+            <state line="8" column="0" selection-start="268" selection-end="268" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -76,6 +52,33 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="test.coffee" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test.coffee">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="8" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="item.coffee" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entities/item.coffee">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="8" selection-start="295" selection-end="295" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="game.coffee" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/entities/game.coffee">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="62" column="10" selection-start="1552" selection-end="1552" vertical-scroll-proportion="0.3704497">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="subscription.coffee" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/subscription.coffee">
           <provider selected="true" editor-type-id="text-editor">
@@ -85,39 +88,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="lobby.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/lobby.html">
+      <file leaf-file-name="chat.coffee" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entities/chat.coffee">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="25" selection-start="79" selection-end="79" vertical-scroll-proportion="-1.25">
+            <state line="13" column="0" selection-start="263" selection-end="263" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="lobby.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lobby.html">
+      <file leaf-file-name="user.coffee" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entities/user.coffee">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="54" selection-start="1128" selection-end="1128" vertical-scroll-proportion="-6.875">
-              <folding>
-                <element signature="n#style#0;n#div#0;n#template#4;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="accounts.coffee" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/accounts.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="0" selection-start="375" selection-end="375" vertical-scroll-proportion="0.0">
+            <state line="0" column="5" selection-start="5" selection-end="5" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="game.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/game.html">
+      <file leaf-file-name="clan.coffee" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entities/clan.coffee">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="17" selection-start="836" selection-end="836" vertical-scroll-proportion="0.6094808">
+            <state line="52" column="12" selection-start="1572" selection-end="1572" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -136,22 +128,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/client/utils.coffee" />
-        <option value="$PROJECT_DIR$/client/game.coffee" />
-        <option value="$PROJECT_DIR$/server/entities/chat.coffee" />
-        <option value="$PROJECT_DIR$/lobby.css" />
-        <option value="$PROJECT_DIR$/server/entities/item.coffee" />
-        <option value="$PROJECT_DIR$/lib/schema.js" />
-        <option value="$PROJECT_DIR$/server/publish.coffee" />
-        <option value="$PROJECT_DIR$/client/subscription.coffee" />
         <option value="$PROJECT_DIR$/client/lobby.html" />
         <option value="$PROJECT_DIR$/lobby.html" />
-        <option value="$PROJECT_DIR$/server/entities/game.coffee" />
-        <option value="$PROJECT_DIR$/server/entities/user.coffee" />
-        <option value="$PROJECT_DIR$/server/methods.coffee" />
-        <option value="$PROJECT_DIR$/client/accounts.coffee" />
-        <option value="$PROJECT_DIR$/server/test.coffee" />
         <option value="$PROJECT_DIR$/client/game.html" />
+        <option value="$PROJECT_DIR$/client/accounts.coffee" />
+        <option value="$PROJECT_DIR$/server/entities/clan.coffee" />
+        <option value="$PROJECT_DIR$/server/entities/game.coffee" />
+        <option value="$PROJECT_DIR$/server/entities/chat.coffee" />
+        <option value="$PROJECT_DIR$/server/methods.coffee" />
+        <option value="$PROJECT_DIR$/server/entities/user.coffee" />
+        <option value="$PROJECT_DIR$/server/test.coffee" />
+        <option value="$PROJECT_DIR$/server/entities/item.coffee" />
+        <option value="$PROJECT_DIR$/common.coffee" />
+        <option value="$PROJECT_DIR$/entities/item.coffee" />
+        <option value="$PROJECT_DIR$/test.coffee" />
+        <option value="$PROJECT_DIR$/entities/user.coffee" />
+        <option value="$PROJECT_DIR$/entities/game.coffee" />
       </list>
     </option>
   </component>
@@ -230,24 +222,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="entities" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lobby" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lobby" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -267,6 +241,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lobby" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lobby" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="entities" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -291,7 +279,16 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/entities" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager">
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="$PROJECT_DIR$">
+      <method />
+    </configuration>
     <list size="0" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -395,68 +392,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/server/entities/clan.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="5" selection-start="416" selection-end="416" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/entities/chat.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/client/moment.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/entities/item.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="28" selection-start="288" selection-end="288" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1365412731000" expanded="true" signature="146:288" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.meteor/local/build/server/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/schema.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="36" selection-start="372" selection-end="372" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/publish.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="16" selection-start="723" selection-end="723" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/subscription.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="78" selection-start="78" selection-end="78" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/lobby.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="25" selection-start="79" selection-end="79" vertical-scroll-proportion="-1.25">
@@ -473,44 +408,93 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/entities/game.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="28" selection-start="2481" selection-end="2481" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/entities/user.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="18" selection-start="477" selection-end="477" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="26" selection-start="1007" selection-end="1007" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/accounts.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="0" selection-start="375" selection-end="375" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/test.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="30" selection-start="324" selection-end="324" vertical-scroll-proportion="0.0">
+        <state line="21" column="0" selection-start="440" selection-end="440" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/game.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="17" selection-start="836" selection-end="836" vertical-scroll-proportion="0.6094808">
+        <state line="22" column="17" selection-start="836" selection-end="836" vertical-scroll-proportion="-13.75">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/utils.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/router.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/subscription.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="78" selection-start="78" selection-end="78" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/clan.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="12" selection-start="1572" selection-end="1572" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/chat.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="263" selection-end="263" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/board.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="268" selection-end="268" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/item.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="8" selection-start="295" selection-end="295" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/publish.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="16" selection-start="723" selection-end="723" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="8" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/user.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="5" selection-start="5" selection-end="5" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/game.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="10" selection-start="1552" selection-end="1552" vertical-scroll-proportion="0.3704497">
           <folding />
         </state>
       </provider>

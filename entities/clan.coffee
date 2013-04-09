@@ -48,3 +48,16 @@ Clan.kick = (cid,uid,target) ->
 
   Clan.leave(cid,target)
   User.notify(target,"Kicked out")
+
+Meteor.methods
+  'createClan' : (options) ->
+    Clan.create(@userId,options)
+
+  'joinClan' : (cid) ->
+    Clan.join(cid,@userId)
+
+  'leaveClan' : () ->
+    Clan.leave(Users.findOne(@userId).clan,@userId)
+
+  'kickFromClan' : (uid) ->
+    Clan.kick(Users.findOne(@userId).clan,@userId,uid)

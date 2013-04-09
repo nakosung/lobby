@@ -14,7 +14,7 @@ Template.welcome.events =
 
 Template.lobby.helpers
   games : ->
-    Games.find({},{limit:3})
+    Games.find({},{limit:3,sort:{numUsers:-1}})
 
 Template.main.helpers
   game : ->
