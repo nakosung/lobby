@@ -27,9 +27,11 @@
             </div>
         </div>
     </div>
+    {{#if currentUser}}
     <footer class="footer">
         {{> chat}}
     </footer>
+    {{/if}}
 </body>
 
 <template name="welcome">
@@ -42,7 +44,10 @@
 
 <template name="navbar">
     <a class="brand" href="#" onclick="Router.navigate('/',{trigger:true});return false" >
-        Lobby.js {{stats.numGames}}/{{stats.numUsers}}
+        Lobby.js
+        {{#if currentUser}}
+        {{stats.numGames}}/{{stats.numUsers}}
+        {{/if}}
     </a>
     {{#if currentUser}}
         <ul class="nav">

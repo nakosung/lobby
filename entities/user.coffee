@@ -25,7 +25,7 @@ Meteor.methods
       throw new Meteor.Error('invalid name') unless name.length > 2
       throw new Meteor.Error('name in use') if Users.findOne({name:name},{_id:1})
       Users.update(@userId,{$set:{name:name}})
-      Users._ensureIndex({name:1},{unique:true})
+      Users._ensureIndex({name:1},{unique:true}) unless @isSimulation
 
   'keepAlive' : ->
     User.keepAlive(@userId)

@@ -96,7 +96,7 @@ Handlebars.registerHelper 'neq', (x,y) ->
   showingNote = false
   outer.showNotifications = ->
     # guard re-entrance
-    return if showingNote
+    return if showingNote or not Meteor.user()
 
     note = Notifications.findOne({read:undefined})
     if note
@@ -200,7 +200,7 @@ Template.board.events
 
 Template.leaderboard.helpers
   'users' : ->
-    Users.find({},{sort:{heartbeat:1}})
+    Users.find({heartbeat:{$ne:undefined}},{sort:{heartbeat:1},limit:10})
 
 Template.friends.helpers
   'hasAnyFriend' : ->

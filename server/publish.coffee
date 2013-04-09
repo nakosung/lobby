@@ -35,7 +35,7 @@ Meteor.publish 'board', (bid) ->
   Boards.find(bid,{fields:{articles:1}})
 
 Meteor.publish 'leaderboard', ->
-  Users.find({},{fields:{name:1,heartbeat:1}})
+  Users.find({heartbeat:{$ne:undefined}},{fields:{name:1,heartbeat:1},sort:{heartbeat:1},limit:10})
 
 Meteor.publish 'notifications', ->
   Notifications.find({owner:@userId})

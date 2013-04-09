@@ -5,9 +5,9 @@ Chat.chat = (uid,text,context) ->
     time:Date.now()
     context:context
 
-  Chats._ensureIndex('context')
+  Chats._ensureIndex('context') unless @isSimulation
 
 Meteor.methods
   'chat' : (text) ->
     context = Users.findOne(@userId).game
-    Chat.chat(@userId,text,context)
+    Chat.chat.call(this,@userId,text,context)
