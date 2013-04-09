@@ -150,6 +150,11 @@ Games.allow
   update : ->
     true
 
+if Meteor.isServer
+  Meteor.methods
+    'game.quick' : () ->
+      Game.quickMatch.call(this,@userId)
+
 Meteor.methods
   'game.edit' : (options) ->
     gid = Users.findOne(@userId).game
@@ -163,9 +168,6 @@ Meteor.methods
       Users.update(@userId,{$set:{game:gid}})
     else
       Game.join(gid,@userId)
-
-  'game.quick' : () ->
-    Game.quickMatch.call(this,@userId) unless @isSimulation
 
   'game.leave' : ->
     User.conditionalLeaveGame(@userId)
