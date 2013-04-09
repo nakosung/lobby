@@ -9,5 +9,12 @@ Chat.chat = (uid,text,context) ->
 
 Meteor.methods
   'chat' : (text) ->
-    context = Users.findOne(@userId).game
+    u = Users.findOne(@userId)
+    return unless u
+
+    context = u.game
     Chat.chat.call(this,@userId,text,context)
+
+if Meteor.isServer
+  Meteor.startup ->
+    Chats.remove {}

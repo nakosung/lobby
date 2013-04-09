@@ -1,9 +1,3 @@
-User.preJoinGame = (uid,gid) ->
-  Users.update(uid,{$set:{game:gid}})
-
-User.postLeaveGame = (uid) ->
-  Users.update(uid,{$unset:{game:1}})
-
 User.conditionalLeaveGame = (uid) ->
   u = Users.findOne(uid)
   Game.leave(u.game,uid) if u.game

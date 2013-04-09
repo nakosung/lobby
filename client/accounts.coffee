@@ -111,7 +111,7 @@ Handlebars.registerHelper 'neq', (x,y) ->
         endUp()
 )(this)
 
-Notifications.find().observe
+Notifications.find({owner:Meteor.userId()}).observe
   added: ->
     showNotifications()
 

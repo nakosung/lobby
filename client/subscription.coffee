@@ -15,6 +15,7 @@ Meteor.autosubscribe ->
   c = Session.get('clan')
   subscribeEx 'myGame', Meteor.user()?.game
   subscribeEx 'myClan', Meteor.user()?.clan
+  subscribeEx 'friends', Meteor.user()?.friends
   subscribeEx 'user-profile', u
   subscribeEx 'clan-profile', c
   subscribeEx 'board', u or c
