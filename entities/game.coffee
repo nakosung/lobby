@@ -81,6 +81,9 @@ Game.kick = (gid,uid,target) ->
   User.notify(target,"Kicked out")
 
 Game.readyForGame = (gid,uid) ->
+  # erroneous # complain...
+  return if @isSimulation
+
   ready = Games.findOne({_id:gid,users:{$elemMatch:{uid:uid,ready:{$mod:[2,1]}}}}) == undefined
   if ready
     Games.update({_id:gid,users:{$elemMatch:{uid:uid,ready:undefined}}},{$set:{"users.$.ready":1}})
@@ -110,7 +113,8 @@ Meteor.methods
 
   'game.ready' : ->
     gid = Users.findOne(@userId).game
-    Game.readyForGame(gid,@userId) if gid
+    #Game.readyForGame(gid,@userId) if gid
+    Game.readyForGame.call(this,gid,@userId) if gid
 
   'game.kick' : (uid) ->
     gid = Users.findOne(@userId).game

@@ -20,7 +20,6 @@ Bot.add = (id,options) ->
 
     Meteor.setTimeout f, timeout
 
-  return
   f()
 
 if Meteor.isServer

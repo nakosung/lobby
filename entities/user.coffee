@@ -42,13 +42,13 @@ Meteor.methods
 
 
 ## Connection lost handler
-cleanUp = ->
-  cursor = Users.find({heartbeat:{$lt:Date.now()-30000}},{_id:1})
-  uids = _.pluck cursor.fetch(),'_id'
-  _.each uids, User.logoff
-
-Meteor.setInterval cleanUp, 15 * 1000
-
 if Meteor.isServer
+  cleanUp = ->
+    cursor = Users.find({heartbeat:{$lt:Date.now()-30000}},{_id:1})
+    uids = _.pluck cursor.fetch(),'_id'
+    _.each uids, User.logoff
+
+  Meteor.setInterval cleanUp, 15 * 1000
+
   Meteor.startup ->
-    Users.update({credit:undefined},{$set:credit:0})
+      Users.update({credit:undefined},{$set:credit:0})
