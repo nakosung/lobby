@@ -4,7 +4,12 @@ subscribeEx = (x, others...) ->
   handle = Meteor.subscribe(x,others...)
   Session.set("#{x}-ready",handle?.ready())
 
+interval = null
+
 Meteor.autosubscribe ->
+  if interval == null and Meteor.user()?.name
+    interval = Meteor.setInterval (-> Meteor.call('keepAlive')), 5000
+
   return unless Meteor.user()
 
   _.each(ids.split(' '),(id)->

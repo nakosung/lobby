@@ -17,138 +17,78 @@ Game.edit = (gid,uid,options) ->
   g = Games.findOne(gid)
   throw new Meteor.Error('You are not the master') if g.master != uid
 
-  if options?.title
-    Games.update(gid,{$set:{title:options?.title}})
+  editor =
+    title : (target) ->
+      Games.update(gid,{$set:{title:options?.title}})
 
-  if options?.maxCapacity
-    target = options?.maxCapacity
-    diff = target - g.maxCapacity
-    requiredVacancy = if diff < 0 then -diff else 0
-    Games.update {_id:gid,maxCapacity:g.maxCapacity,vacancy:{$gt:requiredVacancy}},
-      $inc:{maxCapacity:diff,vacancy:diff}
-    throw new Meteor.Error('failed to modify maxCapacity') unless Games.findOne {_id:gid,maxCapacity:target}
+    maxCapacity : (target) ->
+      diff = target - g.maxCapacity
+      requiredVacancy = if diff < 0 then -diff else 0
+      Games.update {_id:gid,maxCapacity:g.maxCapacity,vacancy:{$gt:requiredVacancy}},
+        $inc:{maxCapacity:diff,vacancy:diff}
+      throw new Meteor.Error('failed to modify maxCapacity') unless Games.findOne {_id:gid,maxCapacity:target}
+
+  _.each options, (v,k) ->
+    e = editor[k]
+    throw new Meteor.Error("invalid field: #{k}") unless e
+    e(v)
 
 Game.join = (gid,uid) ->
-  stage = 1
+  User.conditionalLeaveGame(uid)
 
   try
-    # set pending game
-    Users.update({_id:uid,game:undefined,pendingGame:undefined},{$set:{pendingGame:gid}})
-    throw new Meteor.Error("user is already busy with other game room") unless Users.findOne({_id:uid,pendingGame:gid})
-
-    stage = 2
-
-    Games.update({_id:gid,vacancy:{$gt:0}},{$push:{pendingJoin:uid},$inc:{vacancy:-1}})
-    g = Games.findOne({_id:gid,pendingJoin:uid})
-    throw new Meteor.Error('no vacancy') unless g
-
-    stage = 3
-
-    Games.update gid,
-      $push:{users:{uid:uid}}
-      $inc:{numUsers:1}
-      $pull:{pendingJoin:uid}
-
-    Users.update({_id:uid},{$unset:{pendingGame:1},$set:{game:gid}})
-
-    stage = 4
-
-  finally
-    if stage == 3
-      Games.update(gid,{$inc:{vacancy:1},$pull:{pendingJoin:uid}})
-
-    if stage > 1
-      Users.update(uid,{$unset:{pendingGame:1}})
-
-    Game.conditionalDestroy(gid) if stage < 4
-
+    commit [markPendingGame,pendJoin,join,setGame],
+      gid:gid
+      uid:uid
+  catch e
+    Game.conditionalDestroy(gid)
+    throw e
 
 Game.conditionalDestroy = (gid) ->
   Games.remove({_id:gid,users:[],pendingJoin:[]})
 
 Game.leave = (gid,uid) ->
-  stage = 1
+  commit [markPendingGame,markFullIfSolo,conditionalHandOffMaster,unsetGame,removeFromGame],
+    gid:gid
+    uid:uid
 
-  try
-    # set pending game
-    Users.update({_id:uid,game:gid,pendingGame:undefined},{$set:{pendingGame:gid}})
-    throw new Meteor.Error("user is already busy with other game room") unless Users.findOne({_id:uid,game:gid})
-
-    stage = 2
-
-    Games.update {_id:gid,users:{$elemMatch:{uid:uid}}},
-      $pull:{users:{uid:uid}}
-      $inc:{numUsers:-1,vacancy:1}
-
-    # Hand off master if necessary
-    count = 0
-    while Games.findOne({_id:gid,master:uid})
-      g = Games.findOne(gid)
-      new_master = _.find(_.pluck(g.users,'uid'),((u)->u != uid))
-      break unless new_master
-      Games.update {_id:gid,master:uid,users:{$elemMatch:{uid:new_master}}},
-        $set:{master:new_master}
-
-    # Destroy room if necessary
-    Game.conditionalDestroy(gid)
-
-#    if g.master == uid
-#      new_master = _.find(_.pluck(g.users,'uid'),((u)->u != uid))
-#      if not _.isUndefined(new_master)
-#        Games.update {_id:gid,master:uid,users:{$elemMatch:{uid:new_master}}}, {$set:{master:new_master}}
-#        User.notify(new_master,"You are the master of this room")
-
-    Users.update {_id:uid,game:gid}, {$unset:{game:1}}
-  finally
-    if stage > 1
-      Users.update(uid,{$unset:{pendingGame:1}})
+  Game.conditionalDestroy(gid)
 
 Game.create = (uid,options) ->
   User.conditionalLeaveGame(uid)
 
-  gid = Games.insert
-    master:uid
-    numUsers:1
-    users:[{uid:uid}]
-    maxCapacity:16
-    vacancy:15
-    pendingJoin:[]
-    createdAt:Date.now()
-    title:options?.title or grabSomeTitle()
+  gid = Meteor.uuid()
 
-  Users.update({_id:uid,pendingGame:undefined,game:undefined},{$set:{game:gid}})
+  options = options or {}
+  options.maxCapacity ?= 16
+  options.title ?= grabSomeTitle()
 
-  if not Users.findOne({_id:uid,game:gid})
-    Games.remove(gid)
-    throw new Meteor.Error("User is busy")
+  commit [markPendingGame,create,setGame],
+    gid:gid
+    uid:uid
+    options:options
 
   gid
 
 Game.kick = (gid,uid,target) ->
   throw new Meteor.Error("Can't kick yourself") if uid == target
 
-  Games.update {_id:gid,users:{$elemMatch:{uid:uid}},master:uid},
-    $pull:{users:{uid:target}}
-    $inc:{numUsers:-1,vacancy:1}
-
-  Users.update {_id:target,game:gid},
-    $unset:{game:1}
+  commit [markPendingGame,unsetGame,removeFromGame],
+    gid:gid
+    uid:target
 
   User.notify(target,"Kicked out")
 
 Game.readyForGame = (gid,uid) ->
-  # erroneous # complain...
-  return if @isSimulation
-
   ready = Games.findOne({_id:gid,users:{$elemMatch:{uid:uid,ready:{$mod:[2,1]}}}}) == undefined
-  if ready
-    Games.update({_id:gid,users:{$elemMatch:{uid:uid,ready:undefined}}},{$set:{"users.$.ready":1}})
+  if @isSimulation
+    # cannot update :(
   else
-    Games.update({_id:gid,users:{$elemMatch:{uid:uid,ready:1}}},{$unset:{"users.$.ready":1}})
+    if ready
+      Games.update({_id:gid,users:{$elemMatch:{uid:uid,ready:undefined}}},{$set:{"users.$.ready":1}})
+    else
+      Games.update({_id:gid,users:{$elemMatch:{uid:uid,ready:1}}},{$unset:{"users.$.ready":1}})
 
-Games.allow
-  update : ->
-    true
 
 if Meteor.isServer
   Meteor.methods

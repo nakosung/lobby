@@ -57,7 +57,6 @@ if Meteor.isServer
       catch e
         console.log 'dup bot'
 
-
     Users.find({testbot:true}).observeChanges
       added: (id) ->
         try
